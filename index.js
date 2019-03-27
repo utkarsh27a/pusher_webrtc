@@ -2,6 +2,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const Pusher = require('pusher');
+const config = require('./config.json');
 const app = express();
 
 
@@ -12,16 +13,24 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // Create an instance of Pusher
 const pusher = new Pusher({
-    appId: 'XXX-APP-ID',
-    key: 'XXX-APP-KEY',
-    secret: 'XXX-APP-SECRET',
-    cluster: 'XXX-APP-CLUSTER',
+    appId: config.appId,
+    key: config.key,
+    secret: config.secret,
+    cluster: config.cluster,
     encrypted: true
 });
 
 
 app.get('/', (req, res) => {
     return res.sendFile(__dirname + '/index.html');
+});
+
+app.get('/conf', (req, res) => {
+    return res.json(config);
+});
+
+app.get('/script.js', (req, res) => {
+    return res.sendFile(__dirname + '/script.js');
 });
 
 // get authentictation for the channel;
