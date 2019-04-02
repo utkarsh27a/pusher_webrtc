@@ -73,7 +73,13 @@ function initializePusher(appKey, cluster) {
                     localUserMedia = stream;
 
                     toggleEndCallButton();
-                    document.getElementById("selfview").srcObject = stream;
+                    // document.getElementById("selfview").srcObject = stream;
+                    const video = document.getElementById("selfview");
+                    try {
+                      video.srcObject = stream;
+                    } catch (error) {
+                      video.src = URL.createObjectURL(stream);
+                    }
                     /*if (window.URL) {
                         document.getElementById("selfview").srcObject = evt.stream;
                     } else {
@@ -150,11 +156,17 @@ function prepareCaller() {
     //onaddstream handler to receive remote feed and show in remoteview video element
     caller.onaddstream = function(evt) {
         console.log("onaddstream called");
-        if (window.URL) {
-            document.getElementById("remoteview").srcObject = evt.stream;
-        } else {
-            document.getElementById("remoteview").src = evt.stream;
+        const video = document.getElementById("remoteview");
+        try {
+          video.srcObject = evt.stream;
+        } catch (error) {
+          video.src = URL.createObjectURL(evt.stream);
         }
+        // if (window.URL) {
+        //     document.getElementById("remoteview").srcObject = evt.stream;
+        // } else {
+        //     document.getElementById("remoteview").src = evt.stream;
+        // }
     };
 }
 
@@ -189,7 +201,13 @@ function GetRTCSessionDescription() {
 function callUser(user) {
     getCam()
         .then(stream => {
-            document.getElementById("selfview").srcObject = stream;
+            const video = document.getElementById("selfview");
+            try {
+              video.srcObject = stream;
+            } catch (error) {
+              video.src = URL.createObjectURL(stream);
+            }
+            // document.getElementById("selfview").srcObject = stream;
 
             /*if (window.URL) {
                 document.getElementById("selfview").src = window.URL.createObjectURL(stream);
